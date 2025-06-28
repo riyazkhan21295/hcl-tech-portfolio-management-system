@@ -1,5 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import AuthProvider from "./contexts/auth-context";
+import 'antd/dist/reset.css';
 
 import AuthLayout from "./layouts/auth-layout";
 import ProtectedLayout from "./layouts/protected-layout";

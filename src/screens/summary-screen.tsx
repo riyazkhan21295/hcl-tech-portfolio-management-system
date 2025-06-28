@@ -1,5 +1,7 @@
+import PortfoloioSummaryTable from "../components/PortfolioSummary/PortfolioSummaryTable";
+
 const SummaryScreen = () => {
-  return <div>SummaryScreen</div>;
+  return <PortfoloioSummaryTable data={[]} />;
 };
 
 export default SummaryScreen;
