@@ -1,5 +1,6 @@
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router";
 import AuthProvider, { useAuth } from "./contexts/auth-context";
+import 'antd/dist/reset.css';
 
 import LoginScreen from "./screens/login-screen";
 import SummaryScreen from "./screens/summary-screen";
