@@ -3,7 +3,7 @@ import BuyStock from "../components/order/buy-stock/but-stock";
 
 const OrderScreen: React.FC = () => {
   return (
-    <div className="w-screen h-screen flex items-center justify-center">
+    <div className="w-full h-screen flex items-center justify-center">
       <BuyStock
         stockName="HCL"
         price={200}
