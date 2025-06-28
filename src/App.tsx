@@ -22,7 +22,6 @@ function App() {
 
           <Route element={<ProtectedLayout />}>
             <Route path="summary" element={<SummaryScreen />} />
-            <Route path="summary" element={<SummaryScreen />} />
             <Route path="create-order" element={<OrderScreen />} />
             <Route
               path="transactions-history"

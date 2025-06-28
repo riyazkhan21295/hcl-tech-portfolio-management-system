@@ -25,8 +25,21 @@ const useTransectionHistory = () => {
     });
   }
 
+  const mergedData = mergeOrdersWithStockDetails(OrderDetails, SecurityDetails);
+
+  function searchTransactions(query: string) {
+    const lowerQuery = query.toLowerCase();
+
+    return mergedData.filter((item) =>
+      [item.symbol, item.transaction_type, item.order_status, item.order_ref_no]
+        .filter(Boolean)
+        .some((field) => field!.toLowerCase().includes(lowerQuery))
+    );
+  }
+
   return {
-    transectionData: mergeOrdersWithStockDetails(OrderDetails, SecurityDetails),
+    transectionData: mergedData,
+    searchTransactions,
   };
 };
 
