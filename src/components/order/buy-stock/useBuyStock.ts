@@ -1,5 +1,5 @@
 import { Form, message } from "antd";
-import type { IBuyStockProps } from "./but-stock";
+import type { IBuyStockProps } from "./buy-stock";
 
 export interface BuyFormValues {
   stockName: string;
@@ -30,7 +30,7 @@ export const useBuyStock = ({ stock, onComplete }: IBuyStockProps) => {
       } for $${finalOrderValue.toFixed(2)}`
     );
     form.resetFields();
-    onComplete("success");
+    onComplete?.("success");
   };
 
   return {

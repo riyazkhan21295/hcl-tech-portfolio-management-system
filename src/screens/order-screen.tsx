@@ -1,5 +1,5 @@
 import React from "react";
-import BuyStock from "../components/order/buy-stock/but-stock";
+import BuyStock from "../components/order/buy-stock/buy-stock";
 
 const OrderScreen: React.FC = () => {
   return (
@@ -14,6 +14,16 @@ const OrderScreen: React.FC = () => {
           console.log("Order status::", status);
         }}
       />
+
+      {/*  <Modal open footer={null}>
+        <div className="mt-8">
+          <BuyStock
+            onComplete={(status) => {
+              console.log("Order status::", status);
+            }}
+          />
+        </div>
+      </Modal> */}
     </div>
   );
 };

@@ -11,20 +11,23 @@ import {
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import { useBuyStock } from "./useBuyStock";
 
+import STOCKS_JSON from "../../../data/SECURITY_DETAIL.json";
+
 export interface IBuyStockProps {
   stock?: {
     id: string;
     name: string;
     price: number;
   };
-  onComplete: (status: "success" | "failed") => void;
+  onComplete?: (status: "success" | "failed") => void;
 }
 
-const DUMMY_STOCKS = [
-  { label: "Apple Inc. (AAPL) - $150.00", value: "AAPL", price: 150 },
-  { label: "Microsoft Corp. (MSFT) - $300.00", value: "MSFT", price: 300 },
-  { label: "Tesla Inc. (TSLA) - $750.00", value: "TSLA", price: 750 },
-];
+// Map data
+const DUMMY_STOCKS = STOCKS_JSON.map((stock) => ({
+  label: `${stock?.name} - $${stock?.amount}`,
+  value: stock?.name,
+  price: stock?.amount,
+}));
 
 const BuyStock = ({ stock, onComplete }: IBuyStockProps) => {
   const { form, handleSubmit } = useBuyStock({
@@ -33,7 +36,7 @@ const BuyStock = ({ stock, onComplete }: IBuyStockProps) => {
   });
 
   const quantity = Form.useWatch("quantity", form);
-  const selectedStockName = Form.useWatch("stockName", form);
+  const selectedStockName = Form.useWatch(["stockName"], form);
   const selectedStockPrice = Form.useWatch("stockPrice", form);
 
   const effectiveStockName = stock?.name || selectedStockName;
@@ -46,12 +49,7 @@ const BuyStock = ({ stock, onComplete }: IBuyStockProps) => {
         Buy Stock
       </h2>
 
-      <Form
-        form={form}
-        layout="vertical"
-        onFinish={handleSubmit}
-        className="space-y-4"
-      >
+      <Form form={form} layout="vertical" onFinish={handleSubmit}>
         {/* Hidden field ensures Form.useWatch on stockPrice works correctly */}
         <Form.Item name="stockPrice" hidden>
           <InputNumber />
@@ -82,6 +80,7 @@ const BuyStock = ({ stock, onComplete }: IBuyStockProps) => {
                 rules={[{ required: true, message: "Please select a stock" }]}
               >
                 <Select
+                  showSearch
                   size="large"
                   placeholder="Choose a stock"
                   className="w-full!"
@@ -89,6 +88,11 @@ const BuyStock = ({ stock, onComplete }: IBuyStockProps) => {
                     label: s.label,
                     value: s.value,
                   }))}
+                  filterOption={(input, option) =>
+                    (option?.label as string)
+                      .toLowerCase()
+                      .includes(input.toLowerCase())
+                  }
                   onChange={(value) => {
                     const stock = DUMMY_STOCKS.find((s) => s.value === value);
                     if (stock) {
