@@ -2,12 +2,38 @@ import { Table } from 'antd';
 import useTransectionHistory from '../hooks/useTransectionHistory';
 import { formatDateToDMY } from '../library/helper';
 import { OrderStatus, TransectionStatus } from '../library/enum';
+import Search from 'antd/es/input/Search';
+import { useState } from 'react';
 
 const TransectionHistory = () => {
-  const { transectionData } = useTransectionHistory();
+  const { transectionData, searchTransactions } = useTransectionHistory();
+  const [query, setQuery] = useState('');
+  const [filteredData, setFilteredData] = useState(transectionData);
+
+  const handleSearch = (value: string) => {
+    setQuery(value);
+    if (!value) {
+      setFilteredData(transectionData);
+    } else {
+      const results = searchTransactions(value);
+      setFilteredData(results);
+    }
+  };
 
   return (
-    <Table dataSource={transectionData} columns={getColumnData()} rowKey="id" />
+    <>
+      <div className="mb-4">
+        <Search
+          placeholder="Search by symbol, status, reference..."
+          allowClear
+          enterButton="Search"
+          size="large"
+          onSearch={handleSearch}
+          onChange={(e) => handleSearch(e.target.value)}
+        />
+      </div>
+      <Table dataSource={filteredData} columns={getColumnData()} rowKey="id" />
+    </>
   );
 };
 
