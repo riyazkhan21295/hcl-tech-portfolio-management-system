@@ -6,17 +6,8 @@ import { OrderStatus, TransectionStatus } from '../library/enum';
 const TransectionHistory = () => {
   const { transectionData } = useTransectionHistory();
 
-  console.log('transectionData::', transectionData);
-
   return (
-    <div className="flex w-full">
-      <Table
-        dataSource={transectionData}
-        columns={getColumnData()}
-        rowKey="id"
-      />
-      ;
-    </div>
+    <Table dataSource={transectionData} columns={getColumnData()} rowKey="id" />
   );
 };
 
@@ -47,7 +38,7 @@ const getColumnData = () => [
     key: 'transaction_type',
     render: (text: string) => (
       <span
-        className={`border px-2 py-1 rounded ${
+        className={`border px-2 py-1 rounded  ${
           text === TransectionStatus.BUY
             ? 'border-yellow-500 text-yellow-500'
             : 'border-green-500 text-green-500'
@@ -77,7 +68,9 @@ const getColumnData = () => [
     title: 'Ordered Value',
     dataIndex: 'order_value',
     key: 'order_value',
-    render: (text: string) => <span>{text}</span>,
+    render: (text: string) => (
+      <span className="flex  justify-center">{text}</span>
+    ),
   },
   {
     title: 'Ordered Date',

@@ -3,7 +3,6 @@ import type { SecurityDetail } from '../types/security-detail.type';
 import SecurityDetails from '../data/SECURITY_DETAIL.json';
 import OrderDetails from '../data/ORDER_DETAILS.json';
 
-// type OrderWithSecurity = Order & Omit<SecurityDetail, 'id' | 'name'>;
 const useTransectionHistory = () => {
   function mergeOrdersWithStockDetails(
     orders: Order[],
