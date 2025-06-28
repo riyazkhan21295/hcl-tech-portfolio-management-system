@@ -1,5 +1,6 @@
 import React from "react";
-import BuyStock from "../components/order/buy-stock/but-stock";
+import { Modal } from "antd";
+import BuyStock from "../components/order/buy-stock/buy-stock";
 
 const OrderScreen: React.FC = () => {
   return (
@@ -14,6 +15,8 @@ const OrderScreen: React.FC = () => {
           console.log("Order status::", status);
         }}
       />
+
+      <Modal></Modal>
     </div>
   );
 };

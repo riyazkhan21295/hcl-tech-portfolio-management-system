@@ -36,7 +36,7 @@ const BuyStock = ({ stock, onComplete }: IBuyStockProps) => {
   });
 
   const quantity = Form.useWatch("quantity", form);
-  const selectedStockName = Form.useWatch("stockName", form);
+  const selectedStockName = Form.useWatch(["stockName"], form);
   const selectedStockPrice = Form.useWatch("stockPrice", form);
 
   const effectiveStockName = stock?.name || selectedStockName;
