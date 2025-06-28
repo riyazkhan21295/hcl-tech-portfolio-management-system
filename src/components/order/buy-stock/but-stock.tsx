@@ -52,11 +52,11 @@ const BuyStock = ({ stock, onComplete }: IBuyStockProps) => {
         onFinish={handleSubmit}
         className="space-y-4"
       >
-        {/* Hidden field ensures Form.useWatch on stockPrice works correctly */}
         <Form.Item name="stockPrice" hidden>
           <InputNumber />
         </Form.Item>
 
+        {/* If stock is provided  */}
         {stock?.name && stock?.price !== undefined ? (
           <Flex justify="space-between">
             <Flex vertical gap={2} className="mb-6!">
@@ -74,31 +74,28 @@ const BuyStock = ({ stock, onComplete }: IBuyStockProps) => {
             </Flex>
           </Flex>
         ) : (
-          <Row gutter={16}>
-            <Col xs={24} md={24}>
-              <Form.Item
-                label="Select Stock"
-                name="stockName"
-                rules={[{ required: true, message: "Please select a stock" }]}
-              >
-                <Select
-                  size="large"
-                  placeholder="Choose a stock"
-                  className="w-full!"
-                  options={DUMMY_STOCKS.map((s) => ({
-                    label: s.label,
-                    value: s.value,
-                  }))}
-                  onChange={(value) => {
-                    const stock = DUMMY_STOCKS.find((s) => s.value === value);
-                    if (stock) {
-                      form.setFieldsValue({ stockPrice: stock.price });
-                    }
-                  }}
-                />
-              </Form.Item>
-            </Col>
-          </Row>
+          /* If stock is not provided, show dropdown to select the stock */
+          <Form.Item
+            label="Select Stock"
+            name="stockName"
+            rules={[{ required: true, message: "Please select a stock" }]}
+          >
+            <Select
+              size="large"
+              placeholder="Choose a stock"
+              className="w-full!"
+              options={DUMMY_STOCKS.map((s) => ({
+                label: s.label,
+                value: s.value,
+              }))}
+              onChange={(value) => {
+                const stock = DUMMY_STOCKS.find((s) => s.value === value);
+                if (stock) {
+                  form.setFieldsValue({ stockPrice: stock.price });
+                }
+              }}
+            />
+          </Form.Item>
         )}
 
         <Row gutter={16}>
