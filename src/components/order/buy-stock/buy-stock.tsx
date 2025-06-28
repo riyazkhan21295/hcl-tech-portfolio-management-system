@@ -19,7 +19,7 @@ export interface IBuyStockProps {
     name: string;
     price: number;
   };
-  onComplete: (status: "success" | "failed") => void;
+  onComplete?: (status: "success" | "failed") => void;
 }
 
 // Map data

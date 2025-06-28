@@ -1,5 +1,4 @@
 import React from "react";
-import { Modal } from "antd";
 import BuyStock from "../components/order/buy-stock/buy-stock";
 
 const OrderScreen: React.FC = () => {
@@ -16,7 +15,15 @@ const OrderScreen: React.FC = () => {
         }}
       />
 
-      <Modal></Modal>
+      {/*  <Modal open footer={null}>
+        <div className="mt-8">
+          <BuyStock
+            onComplete={(status) => {
+              console.log("Order status::", status);
+            }}
+          />
+        </div>
+      </Modal> */}
     </div>
   );
 };

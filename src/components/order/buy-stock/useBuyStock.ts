@@ -30,7 +30,7 @@ export const useBuyStock = ({ stock, onComplete }: IBuyStockProps) => {
       } for $${finalOrderValue.toFixed(2)}`
     );
     form.resetFields();
-    onComplete("success");
+    onComplete?.("success");
   };
 
   return {
