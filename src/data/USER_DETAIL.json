@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "first_name": "Ayesha",
+    "last_name": "Khan",
+    "email_address": "ayesha.khan@example.com",
+    "password": "$2b$10$8DkjXy89qX56Nh9.ehXvru9tEzL9xJK8yXFsNghkL6qkGFXQ1Fv4W",
+    "created_on": "2025-06-15T10:24:36Z",
+    "user_role": "user"
+  },
+  {
+    "id": 2,
+    "first_name": "Rohan",
+    "last_name": "Mehta",
+    "email_address": "rohan.mehta@example.com",
+    "password": "$2b$10$71KfUqK6Dc73F61vZ9T8TeUyMQnq7wBObZK2vHfZyplO9eJ7H3cvu",
+    "created_on": "2025-06-18T14:12:22Z",
+    "user_role": "user"
+  },
+  {
+    "id": 3,
+    "first_name": "Fatima",
+    "last_name": "Shaikh",
+    "email_address": "fatima.shaikh@example.com",
+    "password": "$2b$10$DwzF1Zu2OaTkUJ8A9tIFTeJo9QWwB14qG/QNqJHvW0evBfG5m3iZe",
+    "created_on": "2025-06-20T09:45:18Z",
+    "user_role": "user"
+  },
+  {
+    "id": 4,
+    "first_name": "Arjun",
+    "last_name": "Singh",
+    "email_address": "arjun.singh@example.com",
+    "password": "$2b$10$PlL8zBzh0wBdEYKkH7v6oOT9fQKDyKZKp6AmhPaKq/mDEK4J0TtNa",
+    "created_on": "2025-06-21T08:13:05Z",
+    "user_role": "user"
+  },
+  {
+    "id": 5,
+    "first_name": "Sneha",
+    "last_name": "Reddy",
+    "email_address": "sneha.reddy@example.com",
+    "password": "$2b$10$zJ9uKH6qlxfPH5CJ4rE6FOcpKYjPw3vck0VIBOuP9MVOcE7aE1KU2",
+    "created_on": "2025-06-25T11:57:41Z",
+    "user_role": "user"
+  }
+]
