@@ -5,9 +5,11 @@ const LoginScreen = () => {
   const { login } = useAuth();
 
   return (
-    <Button size="large" onClick={login}>
-      Login
-    </Button>
+    <>
+      <Button size="large" onClick={login}>
+        Login
+      </Button>
+    </>
   );
 };
 
