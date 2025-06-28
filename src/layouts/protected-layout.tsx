@@ -37,7 +37,7 @@ const ProtectedLayout = () => {
         collapsible
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
-        className="h-screen fixed left-0 bg-[#011528]"
+        className="h-screen fixed left-0"
         width={250}
       >
         <div className="flex flex-col h-full">
@@ -46,7 +46,7 @@ const ProtectedLayout = () => {
             mode="inline"
             defaultSelectedKeys={["summary"]}
             items={menuItems}
-            className="bg-[#011528] flex-grow pt-2"
+            className="flex-grow pt-2"
           />
 
           <Menu
@@ -54,7 +54,7 @@ const ProtectedLayout = () => {
             mode="inline"
             selectable={false}
             items={[logoutItem]}
-            className="bg-[#011528] border-t border-[#ffffff1a]"
+            className="border-t border-[#ffffff1a]"
           />
         </div>
       </Sider>
