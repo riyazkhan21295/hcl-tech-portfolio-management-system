@@ -1,16 +1,43 @@
-import { Form, InputNumber, Button, Row, Col, Typography, Flex } from "antd";
+import {
+  Form,
+  InputNumber,
+  Button,
+  Row,
+  Col,
+  Typography,
+  Flex,
+  Select,
+} from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import { useBuyStock } from "./useBuyStock";
 
 export interface IBuyStockProps {
-  stockName: string;
-  price: number;
+  stock?: {
+    id: string;
+    name: string;
+    price: number;
+  };
   onComplete: (status: "success" | "failed") => void;
 }
 
-const BuyStock = ({ stockName, price, onComplete }: IBuyStockProps) => {
-  const { form, handleSubmit } = useBuyStock({ price, onComplete });
+const DUMMY_STOCKS = [
+  { label: "Apple Inc. (AAPL) - $150.00", value: "AAPL", price: 150 },
+  { label: "Microsoft Corp. (MSFT) - $300.00", value: "MSFT", price: 300 },
+  { label: "Tesla Inc. (TSLA) - $750.00", value: "TSLA", price: 750 },
+];
+
+const BuyStock = ({ stock, onComplete }: IBuyStockProps) => {
+  const { form, handleSubmit } = useBuyStock({
+    stock,
+    onComplete,
+  });
+
   const quantity = Form.useWatch("quantity", form);
+  const selectedStockName = Form.useWatch("stockName", form);
+  const selectedStockPrice = Form.useWatch("stockPrice", form);
+
+  const effectiveStockName = stock?.name || selectedStockName;
+  const effectivePrice = stock?.price || selectedStockPrice;
 
   return (
     <div className="w-full max-w-2xl mx-auto p-4 bg-white shadow rounded-2xl">
@@ -25,23 +52,57 @@ const BuyStock = ({ stockName, price, onComplete }: IBuyStockProps) => {
         onFinish={handleSubmit}
         className="space-y-4"
       >
-        <Flex justify="space-between">
-          <Flex vertical gap={2} className="mb-6!">
-            <Typography.Text>Stock Name</Typography.Text>
-            <Typography.Title className="m-0!" level={5}>
-              {stockName}
-            </Typography.Title>
-          </Flex>
+        {/* Hidden field ensures Form.useWatch on stockPrice works correctly */}
+        <Form.Item name="stockPrice" hidden>
+          <InputNumber />
+        </Form.Item>
 
-          <Flex vertical gap={2} className="mb-6!">
-            <Typography.Text>Price/Unit</Typography.Text>
-            <Typography.Title className="m-0!" level={5}>
-              {price}
-            </Typography.Title>
+        {stock?.name && stock?.price !== undefined ? (
+          <Flex justify="space-between">
+            <Flex vertical gap={2} className="mb-6!">
+              <Typography.Text>Stock Name</Typography.Text>
+              <Typography.Title className="m-0!" level={5}>
+                {stock?.name}
+              </Typography.Title>
+            </Flex>
+
+            <Flex vertical gap={2} className="mb-6!">
+              <Typography.Text>Price/Unit</Typography.Text>
+              <Typography.Title className="m-0!" level={5}>
+                {stock?.price}
+              </Typography.Title>
+            </Flex>
           </Flex>
-        </Flex>
+        ) : (
+          <Row gutter={16}>
+            <Col xs={24} md={24}>
+              <Form.Item
+                label="Select Stock"
+                name="stockName"
+                rules={[{ required: true, message: "Please select a stock" }]}
+              >
+                <Select
+                  size="large"
+                  placeholder="Choose a stock"
+                  className="w-full!"
+                  options={DUMMY_STOCKS.map((s) => ({
+                    label: s.label,
+                    value: s.value,
+                  }))}
+                  onChange={(value) => {
+                    const stock = DUMMY_STOCKS.find((s) => s.value === value);
+                    if (stock) {
+                      form.setFieldsValue({ stockPrice: stock.price });
+                    }
+                  }}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+        )}
 
         <Row gutter={16}>
+          {/* Quantity Input */}
           <Col xs={24} md={12}>
             <Form.Item
               label="Quantity"
@@ -58,12 +119,17 @@ const BuyStock = ({ stockName, price, onComplete }: IBuyStockProps) => {
             </Form.Item>
           </Col>
 
+          {/* Order Value */}
           <Col xs={24} md={12}>
             <Form.Item label="Order Value">
               <InputNumber
                 size="large"
                 className="w-full!"
-                value={quantity ? Number((price * quantity).toFixed(2)) : 0}
+                value={
+                  quantity && effectivePrice
+                    ? Number((effectivePrice * quantity).toFixed(2))
+                    : 0
+                }
                 readOnly
                 placeholder="Order Value will be calculated"
               />
@@ -77,7 +143,7 @@ const BuyStock = ({ stockName, price, onComplete }: IBuyStockProps) => {
             type="primary"
             htmlType="submit"
             className="w-full!"
-            disabled={!quantity}
+            disabled={!quantity || !effectiveStockName || !effectivePrice}
           >
             Confirm Buy Order
           </Button>
