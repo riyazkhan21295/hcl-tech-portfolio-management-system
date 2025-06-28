@@ -1,6 +1,15 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-type TUser = { id: string; firstName: string; lastName: string; email: string };
+import USER_DETAIL from "../data/USER_DETAIL.json";
+
+type TUser = {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email_address: string;
+  created_on: string;
+  user_role: string;
+};
 
 type TAuthContext = {
   isAuthenticated: boolean;
@@ -11,15 +20,8 @@ type TAuthContext = {
 
 const AuthContext = createContext<TAuthContext | null>(null);
 
-const DEFAULT_USER: TUser = {
-  id: "1",
-  firstName: "Riyaz",
-  lastName: "Khan",
-  email: "riyaz.khan.21295@gmail.com",
-};
-
 const AuthProvider = ({ children }: any) => {
-  const [user, setUser] = useState<TUser | null>(DEFAULT_USER);
+  const [user, setUser] = useState<TUser | null>(USER_DETAIL?.[0]);
 
   useEffect(() => {
     // Simulate fetching user data from an API or local storage
@@ -39,7 +41,7 @@ const AuthProvider = ({ children }: any) => {
         user,
         isAuthenticated: !!user,
         login: () => {
-          const newUser = DEFAULT_USER;
+          const newUser = USER_DETAIL?.[0];
           localStorage.setItem("user", JSON.stringify(newUser));
           setUser(newUser);
         },

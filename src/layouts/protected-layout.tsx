@@ -32,7 +32,7 @@ const ProtectedLayout = () => {
   };
 
   return (
-    <Layout className="min-h-screen bg-white">
+    <Layout className="min-h-screen bg-white w-screen">
       <Sider
         collapsible
         collapsed={collapsed}
