@@ -1,32 +1,29 @@
+import { ShoppingCartOutlined } from "@ant-design/icons";
 import {
+  Button,
+  Col,
+  Flex,
   Form,
   InputNumber,
-  Button,
   Row,
-  Col,
-  Typography,
-  Flex,
   Select,
+  Typography,
 } from "antd";
-import { ShoppingCartOutlined } from "@ant-design/icons";
+import useStocks from "../../../states/useStocks";
 import { useBuyStock } from "./useBuyStock";
 
 export interface IBuyStockProps {
   stock?: {
-    id: string;
+    id: number;
     name: string;
     price: number;
   };
   onComplete: (status: "success" | "failed") => void;
 }
 
-const DUMMY_STOCKS = [
-  { label: "Apple Inc. (AAPL) - $150.00", value: "AAPL", price: 150 },
-  { label: "Microsoft Corp. (MSFT) - $300.00", value: "MSFT", price: 300 },
-  { label: "Tesla Inc. (TSLA) - $750.00", value: "TSLA", price: 750 },
-];
-
 const BuyStock = ({ stock, onComplete }: IBuyStockProps) => {
+  const { stocks } = useStocks();
+
   const { form, handleSubmit } = useBuyStock({
     stock,
     onComplete,
@@ -85,14 +82,14 @@ const BuyStock = ({ stock, onComplete }: IBuyStockProps) => {
                   size="large"
                   placeholder="Choose a stock"
                   className="w-full!"
-                  options={DUMMY_STOCKS.map((s) => ({
-                    label: s.label,
-                    value: s.value,
+                  options={stocks.map((s) => ({
+                    label: s.name,
+                    value: s.id,
                   }))}
                   onChange={(value) => {
-                    const stock = DUMMY_STOCKS.find((s) => s.value === value);
+                    const stock = stocks.find((s) => s.id === value);
                     if (stock) {
-                      form.setFieldsValue({ stockPrice: stock.price });
+                      form.setFieldsValue({ stockPrice: stock.amount });
                     }
                   }}
                 />

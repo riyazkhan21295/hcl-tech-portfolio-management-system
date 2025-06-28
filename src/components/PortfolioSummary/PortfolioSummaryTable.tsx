@@ -1,85 +1,73 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Table, Tag } from "antd";
+import { useAuth } from "../../contexts/auth-context";
+import useStockTransaction from "../../states/useStockTransaction";
+import useStocks from "../../states/useStocks";
+import { formatCurrency } from "../../utils";
 
+const PortfolioSummaryTable = () => {
+  const { user } = useAuth();
+  const userId = user?.id;
 
-import React from 'react';
-import { Table, Tag } from 'antd';
+  const { getStockById } = useStocks();
 
-const formatCurrency = (value: number | string) => `$${parseFloat(value as string).toLocaleString(undefined, {
-  minimumFractionDigits: 2,
-  maximumFractionDigits: 2,
-})}`;
+  const { getStockTransactionsByUserId } = useStockTransaction();
+  const stockTransactions = getStockTransactionsByUserId(userId!);
 
-interface PortfolioSummaryData {
-  orderDate: string;
-  orderRefNo: string;
-  fundName: string;
-  transactionType: string;
-  credit: number | string;
-  debit: number | string;
-  runningBalance: number | string;
-}
+  const filteredStockTransactions = stockTransactions.filter(
+    (transaction: any) => {
+      return transaction.order_status === "Completed";
+    }
+  );
 
-interface PortfolioSummaryTableProps {
-  data: PortfolioSummaryData[];
-}
-
-const PortfolioSummaryTable: React.FC<PortfolioSummaryTableProps> = ({ data }) => {
-  const columns = getColumns();
+  const columns = getColumns({ getStockById });
 
   return (
     <Table
       columns={columns}
-      dataSource={data}
-      pagination={{ pageSize: 5 }}
-      rowKey="orderRefNo"
-      bordered
+      dataSource={filteredStockTransactions}
+      pagination={false}
     />
   );
 };
 
 export default PortfolioSummaryTable;
 
-const getColumns = () => [
-    {
-      title: 'Order Date',
-      dataIndex: 'orderDate',
-      key: 'orderDate',
-    },
-    {
-      title: 'Order Ref No.',
-      dataIndex: 'orderRefNo',
-      key: 'orderRefNo',
-    },
-    {
-      title: 'Fund Name',
-      dataIndex: 'fundName',
-      key: 'fundName',
-    },
-    {
-      title: 'Transaction Type',
-      dataIndex: 'transactionType',
-      key: 'transactionType',
-      render: (type: string) => (
-        <Tag color={type === 'Buy' ? 'green' : 'red'}>
-          {type.toUpperCase()}
-        </Tag>
-      ),
-    },
-    {
-      title: 'Credit',
-      dataIndex: 'credit',
-      key: 'credit',
-      render: (value: number | string) => formatCurrency(value),
-    },
-    {
-      title: 'Debit',
-      dataIndex: 'debit',
-      key: 'debit',
-      render: (value: number | string) => formatCurrency(value),
-    },
-    {
-      title: 'Running Balance',
-      dataIndex: 'runningBalance',
-      key: 'runningBalance',
-      render: (value: number | string) => formatCurrency(value),
-    },
-  ];
+const getColumns = ({ getStockById }: any) => [
+  {
+    key: "created_on",
+    title: "Order Date",
+    render: (value: any) => value.created_on,
+  },
+  {
+    key: "order_ref_no",
+    title: "Order Ref No.",
+    render: (value: any) => value.order_ref_no,
+  },
+  {
+    key: "id_security_detail",
+    title: "Stock Name",
+    render: (value: any) => getStockById(value.id_security_detail)?.name,
+  },
+  {
+    key: "transaction_type",
+    title: "Transaction Type",
+    render: (value: any) => (
+      <Tag color={value.transaction_type === "BUY" ? "green" : "red"}>
+        {value.transaction_type}
+      </Tag>
+    ),
+  },
+  {
+    key: "credit",
+    title: "Credit",
+    render: (value: any) =>
+      value.transaction_type === "BUY" && formatCurrency(value.order_value),
+  },
+  {
+    key: "debit",
+    title: "Debit",
+    render: (value: any) =>
+      value.transaction_type === "SELL" && formatCurrency(value.order_value),
+  },
+];

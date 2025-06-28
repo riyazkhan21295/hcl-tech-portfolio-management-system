@@ -16,6 +16,10 @@ type TStockTransaction = {
 type UseStockTransaction = {
   stockTransactions: TStockTransaction[];
   getStockTransactionsByUserId: (userId: number) => TStockTransaction[];
+  getStockTransactionsByStockId: (
+    stockId: number,
+    userId: number
+  ) => TStockTransaction[];
 };
 
 const useStockTransaction = create<UseStockTransaction>((set, get) => ({
@@ -29,6 +33,15 @@ const useStockTransaction = create<UseStockTransaction>((set, get) => ({
   addStockTransaction: (transaction: TStockTransaction) => {
     const { stockTransactions } = get();
     set({ stockTransactions: [...stockTransactions, transaction] });
+  },
+  getStockTransactionsByStockId: (stockId: number, userId: number) => {
+    const { stockTransactions } = get();
+    return stockTransactions.filter((transaction) => {
+      return (
+        transaction.id_security_detail === stockId &&
+        transaction.created_by === userId
+      );
+    });
   },
 }));
 
